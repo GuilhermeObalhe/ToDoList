@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanager.R
 import com.example.taskmanager.domain.model.Task
+import com.example.taskmanager.domain.model.taskList
 import com.example.taskmanager.ui.theme.LightBlue
 import com.example.taskmanager.ui.theme.LightGreen
 import com.example.taskmanager.ui.theme.LightPurple
+import com.example.taskmanager.ui.theme.TaskManagerTheme
 
 @Composable
 fun TaskComponent(task: Task) {
@@ -78,9 +81,9 @@ fun TaskComponent(task: Task) {
                         )
                     )
 
-                    if (task.body != null) {
+                    if (task.description != null) {
                         Text(
-                            text = task.body,
+                            text = task.description,
                             fontFamily = FontFamily(Font(R.font.nunito_bold)),
                             modifier = Modifier.padding(start = 12.dp),
                             color = Color.Gray
@@ -104,5 +107,13 @@ fun TaskComponent(task: Task) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun TaskComponentPreview() {
+    TaskManagerTheme {
+        TaskComponent(taskList[0])
     }
 }

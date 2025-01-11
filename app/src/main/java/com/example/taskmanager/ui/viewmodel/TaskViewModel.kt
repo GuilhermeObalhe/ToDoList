@@ -7,8 +7,7 @@ import com.example.taskmanager.domain.repository.TaskRepository
 import kotlinx.coroutines.launch
 
 
-@HiltViewModel
-class TaskViewModel @Inject constructor(
+class TaskViewModel(
     private val repository: TaskRepository
 ) : ViewModel() {
 

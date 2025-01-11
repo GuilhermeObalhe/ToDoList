@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Badge
-import androidx.compose.material.BadgedBox
-import androidx.compose.material.Icon
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
@@ -21,8 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.breens.jetpackcomposeuiconcepts.R
-import com.breens.jetpackcomposeuiconcepts.ui.theme.Orange
+import com.example.taskmanager.R
+import com.example.taskmanager.ui.theme.Orange
 
 @Composable
 @Preview
@@ -43,7 +43,7 @@ fun ProfileHeaderComponent() {
         BadgedBox(
             badge = {
                 Badge(
-                    backgroundColor = Orange,
+                    containerColor = Orange,
                     contentColor = Color.White,
                     modifier = Modifier.offset(y = 7.dp, x = (-6).dp)
                 )
