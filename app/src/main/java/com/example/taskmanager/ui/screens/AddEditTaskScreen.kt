@@ -11,6 +11,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +37,10 @@ fun AddEditTaskScreen(
     taskId: String? = null,
     modifier: Modifier = Modifier
 ) {
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var start by remember { mutableStateOf("") }
+    var end by remember { mutableStateOf("") }
 
     Scaffold(
         bottomBar = {BottomComponent()},
@@ -53,14 +61,14 @@ fun AddEditTaskScreen(
         )
         {
             AddTaskComponent(
-                title = "",
-                onTitleChange = {},
-                description = "",
-                onDescriptionChange = {},
-                start = "",
-                onStartChange = {},
-                end = "",
-                onEndChange = {}
+                title = title,
+                onTitleChange = {title = it},
+                description = description,
+                onDescriptionChange = {description = it},
+                start = start,
+                onStartChange = {start = it},
+                end = end,
+                onEndChange = {end = it}
             )
         }
     }
@@ -68,7 +76,7 @@ fun AddEditTaskScreen(
 
 @Preview
 @Composable
-private fun AddEditTaskScreen() {
+private fun AddEditTaskScreenPreview() {
     TaskManagerTheme {
         AddEditTaskScreen(
             navController = NavController(LocalContext.current),
