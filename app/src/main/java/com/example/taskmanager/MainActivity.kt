@@ -15,8 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.taskmanager.navigation.AppNavigation
+import com.example.taskmanager.ui.screens.AddEditTaskScreen
 import com.example.taskmanager.ui.screens.TaskScreen
 import com.example.taskmanager.ui.theme.TaskManagerTheme
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

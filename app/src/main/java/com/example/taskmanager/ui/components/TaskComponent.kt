@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -59,7 +59,7 @@ fun TaskComponent(task: Task) {
                     )
             )
 
-            Divider(modifier = Modifier.width(6.dp), color = Color.Black)
+            HorizontalDivider(modifier = Modifier.width(6.dp), color = Color.Black)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -100,7 +100,7 @@ fun TaskComponent(task: Task) {
                     )
                 }
 
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier
                         .width(6.dp)
                         .weight(0.1f), color = Color.Black

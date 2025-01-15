@@ -11,6 +11,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.taskmanager.data.TaskDatabaseProvider
+import com.example.taskmanager.data.TaskRepository
+import com.example.taskmanager.data.TaskRepositoryImpl
 import com.example.taskmanager.ui.components.AddTaskComponent
 import com.example.taskmanager.ui.components.BottomComponent
 import com.example.taskmanager.ui.theme.TaskManagerTheme
@@ -30,23 +37,25 @@ import com.example.taskmanager.ui.viewmodel.AddEditTaskViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddEditTaskScreen(
-    navController: NavController,
-    viewModel: AddEditTaskViewModel,
-    onTaskSaved: () -> Unit,
-    taskId: String? = null,
-    modifier: Modifier = Modifier
-) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var start by remember { mutableStateOf("") }
-    var end by remember { mutableStateOf("") }
+fun AddEditTaskScreen(navController: NavController) {
+
+    val context = LocalContext.current.applicationContext
+    val database = TaskDatabaseProvider.provide(context)
+    val repository = TaskRepositoryImpl(dao = database.taskDao)
+
+    val viewModel = AddEditTaskViewModel(repository = repository)
+
+    val title by viewModel.title.collectAsState()
+    val description by viewModel.description.collectAsState()
+    val startTime by viewModel.startTime.collectAsState()
+    val endTime by viewModel.endTime.collectAsState()
 
     Scaffold(
         bottomBar = {BottomComponent()},
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {navController.navigate("taskScreen")},
+                onClick = {viewModel.saveTask()
+                          navController.navigate("taskScreen")},
                 containerColor = Color.Black,
                 contentColor = Color.White,
                 shape = CircleShape
@@ -56,19 +65,21 @@ fun AddEditTaskScreen(
         }
     ){
         Box(
-            modifier = Modifier.fillMaxWidth().height(500.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(500.dp),
             contentAlignment = Alignment.Center
         )
         {
             AddTaskComponent(
                 title = title,
-                onTitleChange = {title = it},
+                onTitleChange = {viewModel.updateTitle(it)},
                 description = description,
-                onDescriptionChange = {description = it},
-                start = start,
-                onStartChange = {start = it},
-                end = end,
-                onEndChange = {end = it}
+                onDescriptionChange = {viewModel.updateDescription(it)},
+                startTime = startTime,
+                onStartChange = {viewModel.updateStartTime(it)},
+                endTime = endTime,
+                onEndChange = {viewModel.updateEndTime(it)}
             )
         }
     }
@@ -78,11 +89,6 @@ fun AddEditTaskScreen(
 @Composable
 private fun AddEditTaskScreenPreview() {
     TaskManagerTheme {
-        AddEditTaskScreen(
-            navController = NavController(LocalContext.current),
-            viewModel = AddEditTaskViewModel(),
-            onTaskSaved = {},
-            taskId = 1.toString()
-        )
+        AddEditTaskScreen(navController = NavController(LocalContext.current))
     }
 }

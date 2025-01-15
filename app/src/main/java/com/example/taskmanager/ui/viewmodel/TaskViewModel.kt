@@ -2,18 +2,41 @@ package com.example.taskmanager.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.taskmanager.data.TaskEntity
+import com.example.taskmanager.data.TaskRepository
 import com.example.taskmanager.domain.model.Task
-import com.example.taskmanager.domain.repository.TaskRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class TaskViewModel(
+@HiltViewModel
+class TaskViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
 
-    fun addTask(task: Task) {
+    private val _taskList = MutableStateFlow<List<Task>>(emptyList())
+    val taskList: StateFlow<List<Task>> = _taskList.asStateFlow()
+
+    init {
         viewModelScope.launch {
-            repository.addTask(task)
+            repository.getAllTasks().collectLatest { taskList ->
+                _taskList.value = taskList.map { it.toTask() }
+            }
         }
+    }
+
+    private fun TaskEntity.toTask(): Task {
+        return Task(
+            id = id,
+            title = title,
+            description = description,
+            startTime = startTime,
+            endTime = endTime
+        )
     }
 }

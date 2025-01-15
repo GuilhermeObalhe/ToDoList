@@ -5,8 +5,7 @@ data class Task(
     val title: String,
     val description: String? = null,
     val startTime: String,
-    val endTime: String,
-    val isCompleted: Boolean = false
+    val endTime: String
 )
 
 // Fake Objects
