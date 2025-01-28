@@ -23,4 +23,8 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun getTaskById(id: Int): Flow<TaskEntity>
+
+    @Query("SELECT COUNT(*) AS tamanho FROM tasks")
+    fun getTaskCount(): Flow<Int>
+
 }

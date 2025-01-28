@@ -24,4 +24,8 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) : TaskRep
     override fun getTaskById(id: Int): Flow<TaskEntity> {
         return dao.getTaskById(id)
     }
+
+    override fun getTaskCount(): Flow<Int> {
+        return dao.getTaskCount()
+    }
 }

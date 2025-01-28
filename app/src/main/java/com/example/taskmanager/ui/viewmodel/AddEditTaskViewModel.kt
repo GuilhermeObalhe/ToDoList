@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class AddEditTaskViewModel @Inject constructor(
     private val repository: TaskRepository
@@ -44,17 +45,41 @@ class AddEditTaskViewModel @Inject constructor(
         _endTime.value = newEndTime
     }
 
-    fun saveTask(){
+    fun saveTask(taskId: Int?) {
         val task = TaskEntity(
+            id = taskId ?: 0,
             title = _title.value,
             description = _description.value,
             startTime = _startTime.value,
-            endTime = _endTime.value)
+            endTime = _endTime.value
+        )
 
         viewModelScope.launch {
-            repository.insertTask(task)
+            if (taskId == null || taskId == 0) {
+                repository.insertTask(task)
+            } else {
+                repository.updateTask(task)
+            }
         }
+    }
 
+
+    fun loadTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getTaskById(taskId).collect { task ->
+                _title.value = task.title
+                _description.value = task.description ?: ""
+                _startTime.value = task.startTime
+                _endTime.value = task.endTime
+            }
+        }
+    }
+
+    fun resetFields() {
+        _title.value = ""
+        _description.value = ""
+        _startTime.value = ""
+        _endTime.value = ""
     }
 
 }

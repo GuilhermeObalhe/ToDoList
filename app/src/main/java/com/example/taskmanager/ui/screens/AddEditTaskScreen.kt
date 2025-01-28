@@ -14,20 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.taskmanager.data.TaskDatabaseProvider
-import com.example.taskmanager.data.TaskRepository
 import com.example.taskmanager.data.TaskRepositoryImpl
 import com.example.taskmanager.ui.components.AddTaskComponent
 import com.example.taskmanager.ui.components.BottomComponent
@@ -37,7 +31,7 @@ import com.example.taskmanager.ui.viewmodel.AddEditTaskViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddEditTaskScreen(navController: NavController) {
+fun AddEditTaskScreen(navController: NavController, taskId: Int?) {
 
     val context = LocalContext.current.applicationContext
     val database = TaskDatabaseProvider.provide(context)
@@ -50,11 +44,20 @@ fun AddEditTaskScreen(navController: NavController) {
     val startTime by viewModel.startTime.collectAsState()
     val endTime by viewModel.endTime.collectAsState()
 
+    LaunchedEffect(taskId) {
+        if (taskId != 0 && taskId != null) {
+            viewModel.loadTask(taskId)
+        } else {
+
+            viewModel.resetFields()
+        }
+    }
+
     Scaffold(
-        bottomBar = {BottomComponent()},
+        bottomBar = {BottomComponent(navController = navController)},
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {viewModel.saveTask()
+                onClick = {viewModel.saveTask(taskId = taskId)
                           navController.navigate("taskScreen")},
                 containerColor = Color.Black,
                 contentColor = Color.White,
@@ -89,6 +92,6 @@ fun AddEditTaskScreen(navController: NavController) {
 @Composable
 private fun AddEditTaskScreenPreview() {
     TaskManagerTheme {
-        AddEditTaskScreen(navController = NavController(LocalContext.current))
+        AddEditTaskScreen(navController = NavController(LocalContext.current), 0)
     }
 }

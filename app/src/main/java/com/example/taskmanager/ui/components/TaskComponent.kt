@@ -1,8 +1,11 @@
 package com.example.taskmanager.ui.components
 
+
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,9 +16,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,12 +45,23 @@ import com.example.taskmanager.ui.theme.LightGreen
 import com.example.taskmanager.ui.theme.LightPurple
 import com.example.taskmanager.ui.theme.TaskManagerTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TaskComponent(task: Task) {
+fun TaskComponent(task: Task,
+                  onEdit: () -> Unit,
+                  onDelete: () -> Unit) {
     val taskColor = listOf(LightPurple, LightGreen, LightBlue).random()
 
+    // Estado para controlar se a tarefa está selecionada
+    var isSelected by remember { mutableStateOf(false) }
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(if (isSelected) Color.LightGray else Color.Transparent)
+            .combinedClickable(
+                onClick = { /* Não faz nada em clique simples */ },
+                onLongClick = { isSelected = !isSelected } // Alterna o estado de seleção
+            ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -100,6 +123,34 @@ fun TaskComponent(task: Task) {
                     )
                 }
 
+                // Botões de ação (só aparecem se a tarefa está selecionada)
+                if (isSelected) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        // Botão Editar
+                        IconButton(
+                            onClick = {onEdit()},
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = "Editar",
+                                tint = Color.Yellow
+                            )
+                        }
+                        // Botão Excluir
+                        IconButton(
+                            onClick = {onDelete()},
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Excluir",
+                                tint = Color.Red
+                            )
+                        }
+                    }
+                }
+
                 HorizontalDivider(
                     modifier = Modifier
                         .width(6.dp)
@@ -114,6 +165,6 @@ fun TaskComponent(task: Task) {
 @Composable
 private fun TaskComponentPreview() {
     TaskManagerTheme {
-        TaskComponent(taskList[0])
+        TaskComponent(taskList[0], onEdit = {}, onDelete = {})
     }
 }

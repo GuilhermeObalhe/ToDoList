@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.taskmanager.ui.screens.AddEditTaskScreen
 import com.example.taskmanager.ui.screens.TaskScreen
-import com.example.taskmanager.ui.viewmodel.AddEditTaskViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -17,8 +16,20 @@ fun AppNavigation(navController: NavHostController) {
         composable("taskScreen") {
             TaskScreen(navController)
         }
-        composable("addEditTaskScreen") {
-            AddEditTaskScreen(navController)
+        composable(
+            route = "addEditTaskScreen/{taskId}",
+            arguments = listOf(navArgument("taskId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val taskId = backStackEntry.arguments?.getInt("taskId") // Use getInt para pegar um Int
+            AddEditTaskScreen(navController = navController, taskId = taskId ?: 0) // Passando 0 se for null
+        }
+
+        composable("calendarScreen") {
+            // Implementar a tela de calendário aqui
+        }
+
+        composable("notificationsScreen") {
+            // Implemente a tela de notificações aqui
         }
     }
 }

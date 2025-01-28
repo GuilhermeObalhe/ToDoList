@@ -1,6 +1,5 @@
 package com.example.taskmanager.data
 
-import com.example.taskmanager.domain.model.Task
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
@@ -13,4 +12,6 @@ interface TaskRepository {
     fun getAllTasks(): Flow<List<TaskEntity>>
 
     fun getTaskById(id: Int): Flow<TaskEntity>
+
+    fun getTaskCount(): Flow<Int>
 }

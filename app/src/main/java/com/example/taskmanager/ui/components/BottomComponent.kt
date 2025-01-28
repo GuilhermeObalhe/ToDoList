@@ -26,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun BottomComponent(modifier: Modifier = Modifier) {
+fun BottomComponent(modifier: Modifier = Modifier, navController: NavController) {
     var selectedScreen by remember { mutableIntStateOf(1) }
     val screens = listOf("Calendar", "Home", "Notifications")
     BottomNavigation(
@@ -50,7 +52,18 @@ fun BottomComponent(modifier: Modifier = Modifier) {
             BottomNavigationItem(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 selected = selectedScreen == index,
-                onClick = { selectedScreen = index },
+                onClick = {
+                    selectedScreen = index
+                    if (index == 0) {
+                        navController.navigate("calendarScreen")
+                    }
+                    if (index == 1) {
+                        navController.navigate("taskScreen")
+                    }
+                    if (index == 2) {
+                        navController.navigate("notificationsScreen")
+                    }
+                },
                 icon = {
                     Box(
                         modifier = Modifier
@@ -74,8 +87,11 @@ fun BottomComponent(modifier: Modifier = Modifier) {
     }
 }
 
+
 @Preview
 @Composable
 private fun BottomComponentPreview() {
-    BottomComponent()
+    BottomComponent(
+        navController = NavController(LocalContext.current)
+    )
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -26,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.taskmanager.data.TaskDatabaseProvider
 import com.example.taskmanager.data.TaskRepositoryImpl
-import com.example.taskmanager.domain.model.taskList
+import com.example.taskmanager.domain.model.Task
 import com.example.taskmanager.ui.components.BottomComponent
 import com.example.taskmanager.ui.components.ProfileHeaderComponent
 import com.example.taskmanager.ui.components.TaskComponent
@@ -48,11 +47,11 @@ fun TaskScreen(navController: NavController){
     Scaffold(
         bottomBar =
         {
-            BottomComponent()
+            BottomComponent(navController = navController)
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {navController.navigate("addEditTaskScreen")},
+                onClick = {navController.navigate("addEditTaskScreen/0")},
                 containerColor = Color.Black,
                 contentColor = Color.White,
                 shape = CircleShape
@@ -76,14 +75,18 @@ fun TaskScreen(navController: NavController){
             item {
                 Spacer(modifier = Modifier.height(30.dp))
 
-                WelcomeMessageComponent()
+                WelcomeMessageComponent(TaskViewModel(repository = repository))
 
                 Spacer(modifier = Modifier.height(30.dp))
             }
 
             items(taskList) { task ->
-                Box {
-                    TaskComponent(task = task)
+                Box() {
+                    TaskComponent(
+                        task = task,
+                        onEdit = {navController.navigate("addEditTaskScreen/${task.id}")},
+                        onDelete = {viewModel.deleteTask(task)}
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
