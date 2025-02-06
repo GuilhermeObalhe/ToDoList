@@ -56,4 +56,5 @@ class TaskViewModel @Inject constructor(
             repository.deleteTask(task.id)
         }
     }
+
 }

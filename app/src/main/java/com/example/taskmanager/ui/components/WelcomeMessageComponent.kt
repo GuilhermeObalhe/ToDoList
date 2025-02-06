@@ -19,7 +19,6 @@ import com.example.taskmanager.ui.theme.LightGray
 import com.example.taskmanager.ui.viewmodel.TaskViewModel
 
 @Composable
-@Preview
 fun WelcomeMessageComponent(viewModel : TaskViewModel) {
 
     val taskCount by viewModel.taskCount.collectAsState()
