@@ -1,4 +1,8 @@
-# To Do List
+# Gerenciador de tarefas - To Do List
 
 ## Descrição 
-Aplicativo de lista de tarefas, onde é possível: criar uma nova tarefas, editar uma tarefa existente, marcar ou desmarcar uma tarefa como 'concluida', excluir uma tarefa.
+O aplicativo se trata de um gerenciador de tarefas. É possível realizar operações de criar; editar e excluir tarefas. O vídeo a seguir mostra a interface e o funcionamento do programa.
+
+
+https://github.com/user-attachments/assets/a6d3b30e-be48-458c-8c8e-f91f2ff41c75
+
