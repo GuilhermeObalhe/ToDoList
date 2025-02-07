@@ -39,8 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanager.R
-import com.example.taskmanager.domain.model.Task
-import com.example.taskmanager.domain.model.taskList
+import com.example.taskmanager.domain.Task
+import com.example.taskmanager.domain.taskList
 import com.example.taskmanager.ui.theme.LightBlue
 import com.example.taskmanager.ui.theme.LightGreen
 import com.example.taskmanager.ui.theme.LightPurple
@@ -51,7 +51,7 @@ import com.example.taskmanager.ui.theme.TaskManagerTheme
 fun TaskComponent(task: Task,
                   onEdit: () -> Unit,
                   onDelete: () -> Unit) {
-    var taskColor by remember { mutableStateOf(listOf(LightPurple, LightGreen, LightBlue).random())}
+    val taskColor by remember { mutableStateOf(listOf(LightPurple, LightGreen, LightBlue).random())}
 
     // Estado para controlar se a tarefa está selecionada
     var isSelected by remember { mutableStateOf(false) }
@@ -67,7 +67,7 @@ fun TaskComponent(task: Task,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${task.startTime}\nAM",
+            text = "${task.startTime}\n Horas",
             fontFamily = FontFamily(Font(R.font.nunito_bold)),
             textAlign = TextAlign.Center
         )

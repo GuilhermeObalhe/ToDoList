@@ -25,13 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.taskmanager.data.TaskDatabaseProvider
 import com.example.taskmanager.data.TaskRepositoryImpl
-import com.example.taskmanager.domain.model.Task
 import com.example.taskmanager.ui.components.BottomComponent
 import com.example.taskmanager.ui.components.ProfileHeaderComponent
 import com.example.taskmanager.ui.components.TaskComponent
 import com.example.taskmanager.ui.components.WelcomeMessageComponent
 import com.example.taskmanager.ui.theme.TaskManagerTheme
-import com.example.taskmanager.ui.viewmodel.TaskViewModel
+import com.example.taskmanager.viewmodel.TaskViewModel
 
 @Composable
 fun TaskScreen(navController: NavController){
@@ -81,11 +80,11 @@ fun TaskScreen(navController: NavController){
             }
 
             items(taskList) { task ->
-                Box() {
+                Box {
                     TaskComponent(
                         task = task,
                         onEdit = {navController.navigate("addEditTaskScreen/${task.id}")},
-                        onDelete = {viewModel.deleteTask(task)}
+                        onDelete = {viewModel.deleteTask(task.id)}
                     )
                 }
 

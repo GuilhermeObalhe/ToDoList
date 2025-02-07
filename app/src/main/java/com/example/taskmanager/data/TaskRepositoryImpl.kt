@@ -17,8 +17,6 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) : TaskRep
         dao.deleteTask(id)
     }
 
-
-
     override fun getAllTasks(): Flow<List<TaskEntity>> {
         return dao.getAllTasks()
     }

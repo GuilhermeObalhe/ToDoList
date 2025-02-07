@@ -1,12 +1,11 @@
-package com.example.taskmanager.ui.viewmodel
+package com.example.taskmanager.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskmanager.data.TaskEntity
 import com.example.taskmanager.data.TaskRepository
-import com.example.taskmanager.domain.model.Task
+import com.example.taskmanager.domain.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,14 +46,14 @@ class TaskViewModel @Inject constructor(
             title = title,
             description = description,
             startTime = startTime,
-            endTime = endTime
+            endTime = endTime,
+            isCompleted = isCompleted
         )
     }
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(taskId: Int) {
         viewModelScope.launch {
-            repository.deleteTask(task.id)
+            repository.deleteTask(taskId)
         }
     }
-
 }

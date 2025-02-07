@@ -26,12 +26,12 @@ import com.example.taskmanager.data.TaskRepositoryImpl
 import com.example.taskmanager.ui.components.AddTaskComponent
 import com.example.taskmanager.ui.components.BottomComponent
 import com.example.taskmanager.ui.theme.TaskManagerTheme
-import com.example.taskmanager.ui.viewmodel.AddEditTaskViewModel
+import com.example.taskmanager.viewmodel.AddEditTaskViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddEditTaskScreen(navController: NavController, taskId: Int?) {
+fun AddEditTaskScreen(navController: NavController, taskId: Int) {
 
     val context = LocalContext.current.applicationContext
     val database = TaskDatabaseProvider.provide(context)
@@ -45,10 +45,9 @@ fun AddEditTaskScreen(navController: NavController, taskId: Int?) {
     val endTime by viewModel.endTime.collectAsState()
 
     LaunchedEffect(taskId) {
-        if (taskId != 0 && taskId != null) {
+        if (taskId != 0) {
             viewModel.loadTask(taskId)
         } else {
-
             viewModel.resetFields()
         }
     }

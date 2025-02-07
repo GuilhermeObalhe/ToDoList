@@ -1,4 +1,4 @@
-package com.example.taskmanager.domain.model
+package com.example.taskmanager.domain
 
 data class Task(
     val id: Int,
