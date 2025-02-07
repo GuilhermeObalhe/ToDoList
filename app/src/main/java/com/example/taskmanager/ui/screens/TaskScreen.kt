@@ -83,6 +83,8 @@ fun TaskScreen(navController: NavController){
                 Box {
                     TaskComponent(
                         task = task,
+                        onComplete = {viewModel.completeTask(task.id)},
+                        isCompleted = task.isCompleted,
                         onEdit = {navController.navigate("addEditTaskScreen/${task.id}")},
                         onDelete = {viewModel.deleteTask(task.id)}
                     )

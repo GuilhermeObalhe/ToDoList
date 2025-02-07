@@ -9,6 +9,8 @@ interface TaskRepository {
 
     suspend fun deleteTask(id: Int)
 
+    suspend fun completeTask(id: Int)
+
     fun getAllTasks(): Flow<List<TaskEntity>>
 
     fun getTaskById(id: Int): Flow<TaskEntity>

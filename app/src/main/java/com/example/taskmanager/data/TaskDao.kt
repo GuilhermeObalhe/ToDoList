@@ -18,6 +18,9 @@ interface TaskDao {
     @Query("DELETE FROM tasks WHERE id = :id")
     suspend fun deleteTask(id: Int)
 
+    @Query("UPDATE tasks SET isCompleted = NOT isCompleted WHERE id = :id")
+    suspend fun completeTask(id: Int)
+
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): Flow<List<TaskEntity>>
 

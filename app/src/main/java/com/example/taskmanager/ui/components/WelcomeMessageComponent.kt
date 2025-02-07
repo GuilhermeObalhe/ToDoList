@@ -27,9 +27,14 @@ fun WelcomeMessageComponent(viewModel : TaskViewModel) {
             fontSize = 22.sp
         )
 
+        val message = if (taskCount == 1) {
+            "$taskCount tarefa para hoje"
+        } else {
+            "$taskCount tarefas para hoje"
+        }
 
         Text(
-            text = "$taskCount tarefas para hoje",
+            text = message,
             fontFamily = FontFamily(Font(R.font.nunito_regular)),
             fontSize = 18.sp,
             color = LightGray

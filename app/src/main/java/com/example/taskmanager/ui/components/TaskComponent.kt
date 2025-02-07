@@ -3,6 +3,7 @@ package com.example.taskmanager.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.HorizontalDivider
@@ -26,11 +29,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
@@ -49,6 +54,8 @@ import com.example.taskmanager.ui.theme.TaskManagerTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskComponent(task: Task,
+                  onComplete: ()  -> Unit,
+                  isCompleted: Boolean,
                   onEdit: () -> Unit,
                   onDelete: () -> Unit) {
     val taskColor by remember { mutableStateOf(listOf(LightPurple, LightGreen, LightBlue).random())}
@@ -60,7 +67,7 @@ fun TaskComponent(task: Task,
             .fillMaxWidth()
             .background(if (isSelected) Color.LightGray else Color.Transparent)
             .combinedClickable(
-                onClick = {/*Não faz nada em clique simples*/},
+                onClick = {},
                 onLongClick = { isSelected = !isSelected } // Alterna o estado de seleção
             ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -96,14 +103,27 @@ fun TaskComponent(task: Task,
                         .weight(0.9f),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = task.title,
-                        fontFamily = FontFamily(Font(R.font.nunito_bold)),
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            top = 12.dp
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+                        Text(
+                            text = task.title,
+                            fontFamily = FontFamily(Font(R.font.nunito_bold)),
+                            modifier = Modifier.padding(
+                                start = 12.dp,
+                                top = 12.dp
+                            )
                         )
-                    )
+
+                        if(isCompleted){
+                            IconButton(enabled = false, onClick={}, modifier = Modifier.alpha(0.7f).size(40.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "Completar",
+                                    tint = Color.Green
+                                )
+                            }
+                        }
+
+                    }
 
                     if (task.description != null) {
                         Text(
@@ -129,7 +149,7 @@ fun TaskComponent(task: Task,
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         // Botão isCompleted
                         IconButton(
-                            onClick = {},
+                            onClick = {onComplete()},
                             modifier = Modifier.size(40.dp)
                         ) {
                             Icon(
@@ -178,6 +198,6 @@ fun TaskComponent(task: Task,
 @Composable
 private fun TaskComponentPreview() {
     TaskManagerTheme {
-        TaskComponent(taskList[0], onEdit = {}, onDelete = {})
+        TaskComponent(taskList[0], onComplete = {}, onEdit = {}, isCompleted = true, onDelete = {})
     }
 }
