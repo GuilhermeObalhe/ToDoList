@@ -53,6 +53,7 @@ fun AddEditTaskScreen(navController: NavController, taskId: Int) {
     }
 
     Scaffold(
+        containerColor = Color.White,
         bottomBar = {BottomComponent(navController = navController)},
         floatingActionButton = {
             FloatingActionButton(

@@ -38,12 +38,11 @@ fun TaskScreen(navController: NavController){
     val context = LocalContext.current.applicationContext
     val database = TaskDatabaseProvider.provide(context)
     val repository = TaskRepositoryImpl(dao = database.taskDao)
-
     val viewModel = TaskViewModel(repository = repository)
-
     val taskList by viewModel.taskList.collectAsState()
 
     Scaffold(
+        containerColor = Color.White,
         bottomBar =
         {
             BottomComponent(navController = navController)
